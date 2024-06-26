@@ -1,9 +1,8 @@
 {
-    "name": "fernando/liven-backend",
-    "require": {},
+    "name": "nandogod/teste_backend",
     "autoload": {
         "psr-4": {
-            "App\\": "App/"
+            "Nandogod\\TesteBackend\\": "src/"
         }
     }
 }
