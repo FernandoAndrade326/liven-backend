@@ -63,5 +63,34 @@
                     return null;
                 }
         }
+
+        public function getById($id){
+            $sql = "SELECT * FROM address WHERE id = ?";
+            $stmt = Model::getConn()->prepare($sql);
+            $stmt->bindValue(1, $id);
+
+            if ($stmt->execute()){
+                $address = $stmt->fetch(PDO::FETCH_OBJ);
+
+                if(!$address){
+                    return null;
+                }
+
+                $this->id = $address->id;
+                $this->user_id = $address->user_id;
+                $this->street = $address->street;
+                $this->number = $address->number;
+                $this->complement = $address->complement;
+                $this->neighborhood = $address->neighborhood;
+                $this->city = $address->city;
+                $this->state = $address->state;
+                $this->zip_code = $address->zip_code;
+                $this->country = $address->country;
+
+            } else{
+                return null;
+            }
+
+        }
     }
 ?>
