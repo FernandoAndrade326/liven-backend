@@ -24,7 +24,7 @@
                     ];
 
                     
-                    define('SECRET_KEY', 'Teste_Liven_Secret_Sample');
+                    define('SECRET_KEY', 'Teste_Liven_Secret_Sample_OK');
                     //Não é uma boa prática e deve ser aleatória,
                     //mas por limitações de ambiente, e proposito didatico, coloquei aqui
                     $algorithm = 'HS256';
