@@ -87,6 +87,7 @@
                 $this->zip_code = $address->zip_code;
                 $this->country = $address->country;
 
+                return $this;
             } else{
                 return null;
             }
