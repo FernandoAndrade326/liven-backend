@@ -1,5 +1,6 @@
 <?php
 
+    require_once("../config.php");
     require_once("../vendor/autoload.php"); //autoload para carregar classes
 
     date_default_timezone_set("America/Sao_Paulo");
