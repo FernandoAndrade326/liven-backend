@@ -53,6 +53,31 @@ use App\Core\Controller;
 
         }
 
+        public function update($id){
+            $addressModel = $this->model("Address");
+            $addressModel = $addressModel->getById($id);
+
+            $updatedAddress = $this->getRequestBody();
+            $addressModel->user_id = $updatedAddress->user_id;
+            $addressModel->street = $updatedAddress->street;
+            $addressModel->number = $updatedAddress->number;
+            $addressModel->complement = $updatedAddress->complement;
+            $addressModel->neighborhood = $updatedAddress->neighborhood;
+            $addressModel->city = $updatedAddress->city;
+            $addressModel->state = $updatedAddress->state;
+            $addressModel->zip_code = $updatedAddress->zip_code;
+            $addressModel->country = $updatedAddress->country;
+
+            if(!$addressModel){
+                http_response_code(404);
+                echo json_encode(["Erro: "=> "Endereço inexistente!"]);
+                exit;
+            }
+
+            $addressModel->update($id);
+            echo json_encode($addressModel, JSON_UNESCAPED_UNICODE);
+        }
+
         public function delete($id){
             $addressModel = $this->model("Address");
             $addressModel = $addressModel->getById($id);
