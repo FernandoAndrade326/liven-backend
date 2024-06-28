@@ -31,8 +31,6 @@
 
                     // Gera o token JWT
                     $jwt = JWT::encode($tokenData, SECRET_KEY, $algorithm); 
-
-                    var_dump($jwt);
                     // Retorna o token JWT
                     return $jwt;
                 } else {
