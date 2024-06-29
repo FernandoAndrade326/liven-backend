@@ -14,33 +14,90 @@ class Addressess extends Controller{
         }
     }
 
-    public function index(){
-        $addressModel = $this->model("Address");
-
-        $address = $addressModel->getAll();
-
-        if(!$address){
-            http_response_code(204);
+    public function index() {
+        // Obter os dados do token
+        $authModel = $this->model("AuthService");
+    
+        $tokenData = $authModel->getTokenData();
+    
+        // Verificar se o tokenData contém os valores esperados
+        if (!$tokenData || !isset($tokenData['user_id'])) {
+            http_response_code(401);
+            echo json_encode(["message" => "Não autorizado: Token inválido. Por favor, faça login novamente!"]);
             exit;
         }
-
-        echo json_encode($address, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function find($id){
+    
+        $user_id = $tokenData['user_id'];
+    
+        // Instanciar o modelo de endereço
         $addressModel = $this->model("Address");
-
-        if(isset($id)){
-            $address = $addressModel->getById($id);
-            echo json_encode($address, JSON_UNESCAPED_UNICODE);
-        } 
+    
+        // Obter endereços do usuário logado
+        $address = $addressModel->getAll($user_id);
+    
+        // Verificar se há endereços
+        if (!$address) {
+            http_response_code(204);
+            echo json_encode(["message" => "Nenhum endereço encontrado para este usuário."]);
+            exit;
+        }
+    
+        // Retornar endereços e message de sucesso
+        http_response_code(200);
+        echo json_encode([
+            "message" => "Endereços recuperados com sucesso.",
+            "data" => $address
+        ], JSON_UNESCAPED_UNICODE);
     }
+    
+    
+    
+
+    public function find($id) {
+        // Obter os dados do token
+        $authModel = $this->model("AuthService");
+    
+        $tokenData = $authModel->getTokenData();
+    
+        // Verificar se o tokenData contém os valores esperados
+        if (!$tokenData || !isset($tokenData['user_id'])) {
+            http_response_code(401);
+            echo json_encode(["message" => "Não autorizado: Token inválido. Por favor, faça login novamente!"]);
+            exit;
+        }
+    
+        // Instanciar o modelo de endereço
+        $addressModel = $this->model("Address");
+    
+        // Verificar se o ID está definido
+        if (isset($id)) {
+            // Obter o endereço pelo ID
+            $address = $addressModel->getById($id);
+            // Verificar se o endereço pertence ao usuário autenticado
+            if ($address->user_id == $tokenData['user_id']) {
+                // Retornar o endereço em formato JSON
+                echo json_encode($address, JSON_UNESCAPED_UNICODE);
+            } else {
+                http_response_code(403);
+                echo json_encode(["message:" => "Você não tem permissão para visualizar este endereço!"]);
+                exit;
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(["message:" => "Por favor, informe um ID válido."]);
+            exit;
+        }
+    }
+    
 
     public function insert(){
         $newAddress = $this->getRequestBody();
 
+        $authModel = $this->model("AuthService");
+        $tokenData = $authModel->getTokenData();
+
         $addressModel = $this->model("Address");
-        $addressModel->user_id = $newAddress->user_id;
+        $addressModel->user_id = $tokenData['user_id'];
         $addressModel->street = $newAddress->street;
         $addressModel->number = $newAddress->number;
         $addressModel->complement = $newAddress->complement;
@@ -71,31 +128,41 @@ class Addressess extends Controller{
             exit;
         }
 
-        // Decodifica o token JWT para obter o user_id do usuário autenticado
-        $headers = getallheaders();
-        $authHeader = $headers['Authorization'];
-        list($jwt) = sscanf($authHeader, 'Bearer %s');
-        $decoded = JWT::decode($jwt, new Key(SECRET_KEY, 'HS256'));
+        $authModel = $this->model("AuthService");
 
-        if ($address->user_id !== $decoded->data->id) {
-            http_response_code(403);
-            echo json_encode(["Erro: " => "Você não tem permissão para alterar este endereço!"]);
+        if($tokenData = $authModel->getTokenData()){
+
+        if(isset($tokenData['user_id'])){
+                if ($address->user_id !== $tokenData['user_id']) {
+                    http_response_code(403);
+                    echo json_encode(["Erro: " => "Você não tem permissão para alterar este endereço!"]);
+                    exit;
+                }
+
+                $updatedAddress = $this->getRequestBody();
+                $addressModel->street = $updatedAddress->street;
+                $addressModel->number = $updatedAddress->number;
+                $addressModel->complement = $updatedAddress->complement;
+                $addressModel->neighborhood = $updatedAddress->neighborhood;
+                $addressModel->city = $updatedAddress->city;
+                $addressModel->state = $updatedAddress->state;
+                $addressModel->zip_code = $updatedAddress->zip_code;
+                $addressModel->country = $updatedAddress->country;
+
+                $addressModel->update($id);
+                echo json_encode(["Usuário: ".$id." - Atualizado com sucesso!"]);
+                echo json_encode($addressModel, JSON_UNESCAPED_UNICODE);
+            } else {
+                http_response_code(401);
+                echo json_encode(["Erro: " => "Acesso não autorizado. Nenhum token fornecido!"]);
+                exit;
+            }
+        }
+            else {
+            http_response_code(401);
+            echo json_encode(["Erro: " => "Acesso não autorizado. Nenhum token fornecido!"]);
             exit;
         }
-
-        $updatedAddress = $this->getRequestBody();
-        $addressModel->user_id = $updatedAddress->user_id;
-        $addressModel->street = $updatedAddress->street;
-        $addressModel->number = $updatedAddress->number;
-        $addressModel->complement = $updatedAddress->complement;
-        $addressModel->neighborhood = $updatedAddress->neighborhood;
-        $addressModel->city = $updatedAddress->city;
-        $addressModel->state = $updatedAddress->state;
-        $addressModel->zip_code = $updatedAddress->zip_code;
-        $addressModel->country = $updatedAddress->country;
-
-        $addressModel->update($id);
-        echo json_encode($addressModel, JSON_UNESCAPED_UNICODE);
     }
 
     public function delete($id){
@@ -108,20 +175,30 @@ class Addressess extends Controller{
             exit;
         }
 
-        // Decodifica o token JWT para obter o user_id do usuário autenticado
-        $headers = getallheaders();
-        $authHeader = $headers['Authorization'];
-        list($jwt) = sscanf($authHeader, 'Bearer %s');
-        $decoded = JWT::decode($jwt, new Key(SECRET_KEY, 'HS256'));
+        $authModel = $this->model("AuthService");
 
-        if ($address->user_id !== $decoded->data->id) {
-            http_response_code(403);
-            echo json_encode(["Erro: " => "Você não tem permissão para excluir este endereço!"]);
+        if($tokenData = $authModel->getTokenData()){
+
+        if(isset($tokenData['user_id'])){
+                if ($address->user_id !== $tokenData['user_id']) {
+                    http_response_code(403);
+                    echo json_encode(["Erro: " => "Você não tem permissão para excluir este endereço!"]);
+                    exit;
+                }
+
+                $addressModel->delete($id);
+                echo json_encode(["Sucesso: " => "Endereço ".$id." deletado com sucesso!"]);
+                echo json_encode($addressModel, JSON_UNESCAPED_UNICODE);
+            } else {
+                http_response_code(401);
+                echo json_encode(["Erro: " => "Acesso não autorizado. Nenhum token fornecido!"]);
+                exit;
+            }
+        } else {
+            http_response_code(401);
+            echo json_encode(["Erro: " => "Acesso não autorizado. Nenhum token fornecido!"]);
             exit;
         }
-
-        $addressModel->delete($id);
-        echo json_encode($addressModel, JSON_UNESCAPED_UNICODE);
     }
 }
 ?>
