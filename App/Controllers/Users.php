@@ -101,26 +101,7 @@
 
         }
 
-        public function update($id){
-            $usersModel = $this->model("User");
-            $usersModel = $usersModel->getById($id);
-
-            $updatedUser = $this->getRequestBody();
-            $usersModel->username = $updatedUser->username;
-            $usersModel->password = $updatedUser->password;
-            $usersModel->email = $updatedUser->email;
-
-            if(!$usersModel){
-                http_response_code(404);
-                echo json_encode(["Erro: "=> "Usuário não encontrado!"]);
-                exit;
-            }
-
-            $usersModel->update($id);
-            echo json_encode($usersModel, JSON_UNESCAPED_UNICODE);
-        }
-
-        public function delete($id) {
+        public function update($id) {
             // Obter os dados do token
             $authModel = $this->model("AuthService");
         
@@ -129,14 +110,16 @@
             // Verificar se o tokenData contém os valores esperados
             if (!$tokenData || !isset($tokenData['user_id'])) {
                 http_response_code(401);
-                echo json_encode(["message" => "Não autorizado: Token inválido. Por favor, faça login novamente!"]);
+                echo json_encode(["message" => "Token inválido. Por favor, faça login novamente!"]);
                 exit;
             }
         
+            $user_id = $tokenData['user_id'];
+        
             // Verificar se o ID passado é igual ao user_id do token
-            if ($id != $tokenData['user_id']) {
+            if ($id != $user_id) {
                 http_response_code(403);
-                echo json_encode(["message" => "Você não tem permissão para deletar esse usuário!"]);
+                echo json_encode(["message" => "Você não tem permissão para alterar dados de outro usuário."]);
                 exit;
             }
         
@@ -147,16 +130,80 @@
             $user = $usersModel->getById($id);
             if (!$user) {
                 http_response_code(404);
-                echo json_encode(["error" => "Usuário não encontrado!"]);
+                echo json_encode(["message" => "Usuário não encontrado!"]);
+                exit;
+            }
+        
+            // Obter os dados atualizados do corpo da requisição
+            $updatedUser = $this->getRequestBody();
+            // Atualizar os dados do usuário
+            $user->username = $updatedUser->username;
+            $user->password = $updatedUser->password;
+            $user->email = $updatedUser->email;
+        
+            // Salvar as alterações no banco de dados
+            $result = $usersModel->update($id, $user);
+        
+            if ($result) {
+                // Retornar uma resposta de sucesso
+                http_response_code(200);
+                echo json_encode([
+                    "message" => "Dados do usuário atualizados com sucesso.",
+                    "data" => $user
+                ], JSON_UNESCAPED_UNICODE);
+            } else {
+                // Caso a atualização falhe
+                http_response_code(500);
+                echo json_encode(["message" => "Erro ao atualizar os dados do usuário."]);
+            }
+        }
+        
+
+        public function delete($id) {
+            // Obter os dados do token
+            $authModel = $this->model("AuthService");
+        
+            $tokenData = $authModel->getTokenData();
+        
+            // Verificar se o tokenData contém os valores esperados
+            if (!$tokenData || !isset($tokenData['user_id'])) {
+                http_response_code(401);
+                echo json_encode(["message" => "Não autorizado: Token inválido."]);
+                exit;
+            }
+        
+            // Verificar se o ID passado é igual ao user_id do token
+            if ($id != $tokenData['user_id']) {
+                http_response_code(403);
+                echo json_encode(["message" => "Você não tem permissão para deletar outro usuário!"]);
+                exit;
+            }
+        
+            // Instanciar o modelo de usuário
+            $usersModel = $this->model("User");
+        
+            // Verificar se o usuário existe
+            $user = $usersModel->getById($id);
+            if (!$user) {
+                http_response_code(404);
+                echo json_encode(["message" => "Usuário não encontrado!"]);
                 exit;
             }
         
             // Deletar o usuário
-            $usersModel->delete($id);
+            $result = $usersModel->delete($id);
         
-            // Retornar uma resposta de sucesso
-            echo json_encode(["message" => "Usuário deletado com sucesso."], JSON_UNESCAPED_UNICODE);
+            if ($result) {
+                // Retornar uma resposta de sucesso
+                http_response_code(200);
+                echo json_encode(["message" => "Usuário deletado com sucesso."], JSON_UNESCAPED_UNICODE);
+            } else {
+                // Caso a exclusão falhe
+                http_response_code(500);
+                echo json_encode(["message" => "Erro ao deletar o usuário."]);
+            }
         }
+        
         
     }
 ?>
