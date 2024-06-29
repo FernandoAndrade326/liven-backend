@@ -15,35 +15,38 @@
         public $zip_code;
         public $country;
 
-        public function getAll(){
-            $sql = "SELECT * FROM address ORDER BY id DESC";
-
-            $stmt = Model::getConn()->prepare($sql);
-            $stmt->execute();
-
-            if($stmt->rowCount() > 0){
-                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-                return $result;
-            } else{
-                return null;
+        public function getAll($user_id) {
+            try {
+                $sql = "SELECT * FROM address WHERE user_id = ?";
+        
+                $stmt = Model::getConn()->prepare($sql);
+                $stmt->bindValue(1, $user_id);
+                $stmt->execute();
+        
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+        
+                    return $result;
+                } else {
+                    return [];
+                }
+            } catch (PDOException $e) {
+                // Tratamento de exceção do PDO
+                error_log("Erro ao obter endereços por ID de usuário: " . $e->getMessage());
+                throw new Exception("Erro ao obter endereços. Tente novamente mais tarde.");
+            } catch (Exception $e) {
+                // Tratamento de outras exceções
+                error_log("Erro geral ao obter endereços por ID de usuário: " . $e->getMessage());
+                throw new Exception("Erro inesperado ao obter endereços. Tente novamente mais tarde.");
             }
-            
         }
+        
 
-        public function insert(){
-            $sql = "INSERT INTO address 
-            (user_id,
-                street,
-                number,
-                complement,
-                neighborhood,
-                city,
-                state,
-                zip_code,
-                country)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+        public function insert() {
+            try {
+                $sql = "INSERT INTO address (user_id, street, number, complement, neighborhood, city, state, zip_code, country) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
                 $stmt = Model::getConn()->prepare($sql);
                 $stmt->bindValue(1, $this->user_id);
                 $stmt->bindValue(2, $this->street);
@@ -54,86 +57,133 @@
                 $stmt->bindValue(7, $this->state);
                 $stmt->bindValue(8, $this->zip_code);
                 $stmt->bindValue(9, $this->country);
-
-                if ($stmt->execute()){
-                    //$this->id =Model::getConn()->getLastAddress();
+        
+                if ($stmt->execute()) {
                     return $this;
-                } else{
+                } else {
                     print_r($stmt->errorInfo());
                     return null;
                 }
+            } catch (PDOException $e) {
+                // Tratamento de exceção do PDO
+                error_log("Erro ao inserir endereço: " . $e->getMessage());
+                throw new Exception("Erro ao inserir endereço. Tente novamente mais tarde.");
+            } catch (Exception $e) {
+                // Tratamento de outras exceções
+                error_log("Erro geral ao inserir endereço: " . $e->getMessage());
+                throw new Exception("Erro inesperado ao inserir endereço. Tente novamente mais tarde.");
+            }
         }
+        
 
-        public function getById($id){
-            $sql = "SELECT * FROM address WHERE id = ?";
-            $stmt = Model::getConn()->prepare($sql);
-            $stmt->bindValue(1, $id);
-
-            if ($stmt->execute()){
-                $address = $stmt->fetch(PDO::FETCH_OBJ);
-
-                if(!$address){
+        public function getById($id) {
+            try {
+                $this->id = $id;
+                $sql = "SELECT * FROM address WHERE id = ?";
+        
+                $stmt = Model::getConn()->prepare($sql);
+                $stmt->bindValue(1, $this->id);
+        
+                $stmt->execute();
+        
+                if ($stmt->rowCount() > 0) {
+                    $result = $stmt->fetch(PDO::FETCH_OBJ);
+        
+                    if (!$result) {
+                        return null;
+                    }
+        
+                    $this->id = $result->id;
+                    $this->user_id = $result->user_id;
+                    $this->street = $result->street;
+                    $this->number = $result->number;
+                    $this->complement = $result->complement;
+                    $this->neighborhood = $result->neighborhood;
+                    $this->city = $result->city;
+                    $this->state = $result->state;
+                    $this->zip_code = $result->zip_code;
+                    $this->country = $result->country;
+        
+                    return $this;
+                } else {
                     return null;
                 }
-
-                $this->id = $address->id;
-                $this->user_id = $address->user_id;
-                $this->street = $address->street;
-                $this->number = $address->number;
-                $this->complement = $address->complement;
-                $this->neighborhood = $address->neighborhood;
-                $this->city = $address->city;
-                $this->state = $address->state;
-                $this->zip_code = $address->zip_code;
-                $this->country = $address->country;
-
-                return $this;
-            } else{
-                return null;
-            }
-
-        }
-
-        public function update($id){
-            $this->id = $id;
-            
-            $sql = "UPDATE address SET street = ?, number = ?, complement = ?, neighborhood = ?, city = ?, state = ?, zip_code = ?, country =? WHERE id = ?";
-
-            $stmt = Model::getConn()->prepare($sql);
-            $stmt->bindValue(1, $this->street);
-            $stmt->bindValue(2, $this->number);
-            $stmt->bindValue(3, $this->complement);
-            $stmt->bindValue(4, $this->neighborhood);
-            $stmt->bindValue(5, $this->city);
-            $stmt->bindValue(6, $this->state);
-            $stmt->bindValue(7, $this->zip_code);
-            $stmt->bindValue(8, $this->country);
-            $stmt->bindValue(9, $this->id);
-
-            if($stmt->execute()){
-                print_r("Usuário: ".$this->id." - Atualizado com sucesso!");
-                return $this;
-            } else{
-                print_r($stmt->errorInfo());
-                return null;
+            } catch (PDOException $e) {
+                // Tratamento de exceção do PDO
+                error_log("Erro ao obter endereço por ID: " . $e->getMessage());
+                throw new Exception("Erro ao obter endereço. Tente novamente mais tarde.");
+            } catch (Exception $e) {
+                // Tratamento de outras exceções
+                error_log("Erro geral ao obter endereço por ID: " . $e->getMessage());
+                throw new Exception("Erro inesperado ao obter endereço. Tente novamente mais tarde.");
             }
         }
+        
 
-        public function delete($id){
-            $this->id = $id;
-
-            $sql = "DELETE FROM address WHERE id = ? ";
-
-            $stmt = Model::getConn()->prepare($sql);
-            $stmt->bindValue(1, $this->id);
-
-            if($stmt->execute()){
-                print_r("Endereço: ".$this->id." - Excluído com sucesso!");
-                return $this;
-            } else{
-                print_r($stmt->errorInfo());
-                return null;
+        public function update($id) {
+            try {
+                $this->id = $id;
+        
+                $sql = "UPDATE address 
+                        SET user_id = ?, street = ?, number = ?, complement = ?, neighborhood = ?, city = ?, state = ?, zip_code = ?, country = ? 
+                        WHERE id = ?";
+        
+                $stmt = Model::getConn()->prepare($sql);
+                $stmt->bindValue(1, $this->user_id);
+                $stmt->bindValue(2, $this->street);
+                $stmt->bindValue(3, $this->number);
+                $stmt->bindValue(4, $this->complement);
+                $stmt->bindValue(5, $this->neighborhood);
+                $stmt->bindValue(6, $this->city);
+                $stmt->bindValue(7, $this->state);
+                $stmt->bindValue(8, $this->zip_code);
+                $stmt->bindValue(9, $this->country);
+                $stmt->bindValue(10, $this->id);
+        
+                if ($stmt->execute()) {
+                    return $this;
+                } else {
+                    print_r($stmt->errorInfo());
+                    return null;
+                }
+            } catch (PDOException $e) {
+                // Tratamento de exceção do PDO
+                error_log("Erro ao atualizar endereço: " . $e->getMessage());
+                throw new Exception("Erro ao atualizar endereço. Tente novamente mais tarde.");
+            } catch (Exception $e) {
+                // Tratamento de outras exceções
+                error_log("Erro geral ao atualizar endereço: " . $e->getMessage());
+                throw new Exception("Erro inesperado ao atualizar endereço. Tente novamente mais tarde.");
             }
         }
+        
+
+        public function delete($id) {
+            try {
+                $this->id = $id;
+        
+                $sql = "DELETE FROM address WHERE id = ?";
+        
+                $stmt = Model::getConn()->prepare($sql);
+                $stmt->bindValue(1, $this->id);
+        
+                if ($stmt->execute()) {
+                    return $this;
+                } else {
+                    // Erro inesperado, pode não lançar exceção mas ainda assim falhar
+                    print_r($stmt->errorInfo());
+                    return null;
+                }
+            } catch (PDOException $e) {
+                // Tratamento de exceção do PDO
+                error_log("Erro ao deletar endereço: " . $e->getMessage());
+                throw new Exception("Erro ao deletar endereço. Tente novamente mais tarde.");
+            } catch (Exception $e) {
+                // Tratamento de outras exceções
+                error_log("Erro geral ao deletar endereço: " . $e->getMessage());
+                throw new Exception("Erro inesperado ao deletar endereço. Tente novamente mais tarde.");
+            }
+        }
+        
     }
 ?>
