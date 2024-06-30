@@ -93,7 +93,7 @@
 
             if($usersModel){
                 http_response_code(201);
-                echo json_encode($usersModel);
+                echo json_encode(["Cadastro realizado com sucesso!", $usersModel]);
             } else{
                 http_response_code(500);
                 echo json_encode(["Erro: " =>"Não foi possível inserir o usuário!"]);
