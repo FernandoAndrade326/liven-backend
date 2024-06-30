@@ -90,33 +90,44 @@ class Addressess extends Controller{
     }
     
 
-    public function insert(){
-        $newAddress = $this->getRequestBody();
-
-        $authModel = $this->model("AuthService");
-        $tokenData = $authModel->getTokenData();
-
-        $addressModel = $this->model("Address");
-        $addressModel->user_id = $tokenData['user_id'];
-        $addressModel->street = $newAddress->street;
-        $addressModel->number = $newAddress->number;
-        $addressModel->complement = $newAddress->complement;
-        $addressModel->neighborhood = $newAddress->neighborhood;
-        $addressModel->city = $newAddress->city;
-        $addressModel->state = $newAddress->state;
-        $addressModel->zip_code = $newAddress->zip_code;
-        $addressModel->country = $newAddress->country;
-
-        $addressModel = $addressModel->insert();
-
-        if($addressModel){
-            http_response_code(201); //criado com sucesso
-            echo json_encode($addressModel);
-        }else{
-            http_response_code(500);
-            echo json_encode(["erro" => "Não foi possível inserir o endereço!"]);
+    public function insert() {
+        try {
+            $newAddress = $this->getRequestBody();
+    
+            $authModel = $this->model("AuthService");
+            $tokenData = $authModel->getTokenData();
+    
+            $addressModel = $this->model("Address");
+            $addressModel->user_id = $tokenData['user_id'];
+            $addressModel->street = $newAddress->street;
+            $addressModel->number = $newAddress->number;
+            $addressModel->complement = $newAddress->complement;
+            $addressModel->neighborhood = $newAddress->neighborhood;
+            $addressModel->city = $newAddress->city;
+            $addressModel->state = $newAddress->state;
+            $addressModel->zip_code = $newAddress->zip_code;
+            $addressModel->country = $newAddress->country;
+    
+            $addressModel = $addressModel->insert();
+    
+            if ($addressModel) {
+                http_response_code(201); // criado com sucesso
+                echo json_encode(["Endereço inserido com sucesso!", $addressModel]);
+            } else {
+                http_response_code(500);
+                echo json_encode(["erro" => "Não foi possível inserir o endereço!"]);
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 1452) {
+                http_response_code(400); // erro de requisição do cliente
+                echo json_encode(["erro" => "Usuário não cadastrado."]);
+            } else {
+                http_response_code(500); // erro interno do servidor
+                echo json_encode(["erro" => "Erro ao inserir o endereço: " . $e->getMessage()]);
+            }
         }
     }
+    
 
     public function update($id){
         $addressModel = $this->model("Address");
