@@ -1,7 +1,7 @@
 <?php
 
     use App\Core\Model;
-
+    require_once("Address.php");
     class User{
 
         public $id;
@@ -14,7 +14,10 @@
 
         public function getAll() {
             try {
-                $sql = "SELECT * FROM user ORDER BY id DESC";
+                $sql = "SELECT u.*, a.*
+                FROM user u
+                LEFT JOIN address a ON u.id = a.user_id
+                ORDER BY u.id DESC;";
         
                 $stmt = Model::getConn()->prepare($sql);
                 $stmt->execute();
@@ -38,45 +41,40 @@
         }
         
 
-        public function getById($id) {
-            try {
-                $this->id = $id;
-                $sql = "SELECT * FROM user WHERE id = ?";
-        
-                $stmt = Model::getConn()->prepare($sql);
-                $stmt->bindValue(1, $this->id);
-        
-                $stmt->execute();
-        
-                if ($stmt->rowCount() > 0) {
-                    $result = $stmt->fetch(PDO::FETCH_OBJ);
-        
-                    if (!$result) {
-                        return null;
-                    }
-        
-                    $this->id = $result->id;
-                    $this->username = $result->username;
-                    $this->password = $result->password;
-                    $this->email = $result->email;
-                    $this->created_at = $result->created_at;
-                    $this->updated_at = $result->updated_at;
-                    $this->is_active = $result->is_active;
-        
-                    return $this;
-                } else {
-                    return null;
-                }
-            } catch (PDOException $e) {
-                // Tratamento de exceção do PDO
-                error_log("Erro ao obter usuário por ID: " . $e->getMessage());
-                throw new Exception("Erro ao obter usuário. Tente novamente mais tarde.");
-            } catch (Exception $e) {
-                // Tratamento de outras exceções
-                error_log("Erro geral ao obter usuário por ID: " . $e->getMessage());
-                throw new Exception("Erro inesperado ao obter usuário. Tente novamente mais tarde.");
+        public function getById($id)
+    {
+        try {
+            $this->id = $id;
+            $sql = "SELECT id AS user_id, username AS user_name, email AS user_email, created_at AS user_created_at, updated_at AS user_updated_at, is_active AS user_is_active
+                    FROM user
+                    WHERE id = ?";
+            
+            $stmt = Model::getConn()->prepare($sql);
+            $stmt->bindValue(1, $this->id);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $user = $stmt->fetch(PDO::FETCH_OBJ);
+
+                // Instanciar o modelo Address e obter os endereços do usuário
+                $addressModel = new Address();
+                $addresses = $addressModel->getByUserId($id);
+                //$addresses = json_encode($addresses);
+                // Adicionar os endereços ao resultado do usuário
+                $user->addresses = $addresses;
+
+                return $user;
+            } else {
+                return null;
             }
+        } catch (PDOException $e) {
+            error_log("Erro ao obter usuário por ID: " . $e->getMessage());
+            throw new Exception("Erro ao obter usuário. Tente novamente mais tarde.");
+        } catch (Exception $e) {
+            error_log("Erro geral ao obter usuário por ID: " . $e->getMessage());
+            throw new Exception("Erro inesperado ao obter usuário. Tente novamente mais tarde.");
         }
+    }
         
 
         public function insert() {
