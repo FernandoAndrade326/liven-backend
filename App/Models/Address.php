@@ -118,6 +118,31 @@
                 throw new Exception("Erro inesperado ao obter endereço. Tente novamente mais tarde.");
             }
         }
+
+        public function getByUserId($userId)
+        {
+            try {
+                $sql = "SELECT id AS address_id, street AS address_street, number AS address_number, complement AS address_complement, neighborhood AS address_neighborhood, city AS address_city, state AS address_state, zip_code AS address_zip_code, country AS address_country
+                        FROM address
+                        WHERE user_id = ?";
+                
+                $stmt = Model::getConn()->prepare($sql);
+                $stmt->bindValue(1, $userId);
+                $stmt->execute();
+    
+                if ($stmt->rowCount() > 0) {
+                    return $stmt->fetchAll(PDO::FETCH_OBJ);
+                } else {
+                    return [];
+                }
+            } catch (PDOException $e) {
+                error_log("Erro ao obter endereços por ID de usuário: " . $e->getMessage());
+                throw new Exception("Erro ao obter endereços. Tente novamente mais tarde.");
+            } catch (Exception $e) {
+                error_log("Erro geral ao obter endereços por ID de usuário: " . $e->getMessage());
+                throw new Exception("Erro inesperado ao obter endereços. Tente novamente mais tarde.");
+            }
+        }
         
 
         public function update($id) {
