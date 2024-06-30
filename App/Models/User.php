@@ -45,7 +45,7 @@
     {
         try {
             $this->id = $id;
-            $sql = "SELECT id AS user_id, username AS user_name, email AS user_email, created_at AS user_created_at, updated_at AS user_updated_at, is_active AS user_is_active
+            $sql = "SELECT id AS user_id, username AS user_name, password as user_password, email AS user_email, created_at AS user_created_at, updated_at AS user_updated_at, is_active AS user_is_active
                     FROM user
                     WHERE id = ?";
             
