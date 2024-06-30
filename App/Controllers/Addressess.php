@@ -2,8 +2,6 @@
 
 use App\Core\Controller;
 use App\Middleware\AuthMiddleware;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 class Addressess extends Controller{
 
@@ -14,7 +12,7 @@ class Addressess extends Controller{
         }
     }
 
-    public function index() {
+    public function index($query) {
         // Obter os dados do token
         $authModel = $this->model("AuthService");
     
@@ -33,7 +31,7 @@ class Addressess extends Controller{
         $addressModel = $this->model("Address");
     
         // Obter endereços do usuário logado
-        $address = $addressModel->getAll($user_id);
+        $address = $addressModel->getAll($user_id, $query);
     
         // Verificar se há endereços
         if (!$address) {
@@ -68,7 +66,6 @@ class Addressess extends Controller{
     
         // Instanciar o modelo de endereço
         $addressModel = $this->model("Address");
-    
         // Verificar se o ID está definido
         if (isset($id)) {
             // Obter o endereço pelo ID
