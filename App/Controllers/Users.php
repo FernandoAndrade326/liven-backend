@@ -137,12 +137,13 @@
             // Obter os dados atualizados do corpo da requisição
             $updatedUser = $this->getRequestBody();
             // Atualizar os dados do usuário
-            $user->username = $updatedUser->username;
-            $user->password = $updatedUser->password;
-            $user->email = $updatedUser->email;
+            $usersModel->username = $updatedUser->username;
+            $usersModel->password = $updatedUser->password;
+            $usersModel->email = $updatedUser->email;
+
         
             // Salvar as alterações no banco de dados
-            $result = $usersModel->update($id, $user);
+            $result = $usersModel->update($id, $usersModel);
         
             if ($result) {
                 // Retornar uma resposta de sucesso
