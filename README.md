@@ -143,7 +143,6 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
       "street": "Rua Anhanguera",
       "complement": ""
     },
-    ...
   ]
   ```
 
@@ -201,12 +200,15 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
         "country": "BR"
     }
 }```
+*Lembrando que estes são apenas alguns dos endpoints do sistema. Verifique toda a documentação no arquivo "api-swagger.yaml" na raiz do projeto.
 
 <h4> Exemplos de Uso</h4>
 <h5>Requisição com Postman:</h5>
 <u1> 
 <li>1. Selecione o método HTTP e insira a URL.</li>
-<li>2. Vá para a aba "Headers" e adicione:<br>
+<li>2. Inicie pelo endpoint de cadastro de usuário.</li>
+<li>3. Em seguida, faça login no endpoint respectivo, e recupere os dados do token.</li>
+<li>4. Com token já gerado pelo endpoint de login, vá para a aba "Headers", em todos os demais endpoints e adicione:<br>
    
    ```
    Key: Authorization
