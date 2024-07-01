@@ -174,14 +174,15 @@ curl -X GET "https://seu-dominio.com/api/users" -H "Authorization: Bearer seuTok
 ```
 
 <h5>Requisição com Postman:</h5>
-1. Selecione o método HTTP e insira a URL.
-2. Vá para a aba "Headers" e adicione:
+<u1> 
+<li>1. Selecione o método HTTP e insira a URL.</li>
+<li>2. Vá para a aba "Headers" e adicione:<br>
    ```
    Key: Authorization
    Value: Bearer seuTokenJWT
-   ```
-3. Clique em "Send".
-
+   ```</li>
+<li>3. Clique em "Send".</li>
+</u1>
 <h5>Ferramentas Recomendadas</h5>
 - <b>Postman</b>: Para testar os endpoints e interagir com o backend.
 
