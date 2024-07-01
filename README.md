@@ -7,11 +7,11 @@
 API desenvolvida para fornecer um conjunto robusto de funcionalidades para gerenciamento de usuários e endereços. Essa API utiliza autenticação JWT para garantir a segurança das operações e gerenciar os níveis de permissão do usuário para com relação às informações pertinentes a ele.
 
 <h3>Pré-requisitos</h3>
-Antes de começar, certifique-se de ter os seguintes requisitos instalados e configurados:<br>
+Para o funcionamento correto, certifique-se de ter os seguintes requisitos sejam atendidos:<br>
 <ul>
 <li><b>PHP 8.0+</b></li>
 <li><b>MySQL 5.7+</b></li>
-<li><b>Composer</b> (para gerenciamento de dependências)</li>
+<li><b>Composer na última versão</b> (para gerenciamento de dependências)</li>
 <li>Servidor web (Apache, Nginx, etc.) - para finalidade de testes locais utilizamos o xampp.</li>
 </ul>
 <h3>Instalação</h3>
@@ -22,14 +22,13 @@ Antes de começar, certifique-se de ter os seguintes requisitos instalados e con
 
    </li>
 <li>2. Navegue até o diretório do projeto:
-   ```sh
+
    cd nome-do-repositorio
-   ```
    </li>
 <li>3. Instale as dependências:
-   ```sh
+
    composer install
-   ``` 
+   
    </li>
 </ul>
 <h3> Autenticação</h3>
@@ -180,6 +179,9 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 </u1>
 <h5>Ferramentas Recomendadas</h5>
 - <b>Postman</b>: Para testar os endpoints e interagir com o backend.
+
+<h5> Testes automatizados</h5>
+- <b>Na pasta "tests" encontram-se os arquivos para testes automatizados, que cobrem cada um dos endpoints listados. Lembre-se de que os dados nele contidos são "mockados".
 
 <h5> Histórico de Versões</h5>
 - <b>v1.0.0</b> - Lançamento inicial da API.
