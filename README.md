@@ -4,7 +4,8 @@
 <h3>Tecnologias</h3>
 <ul>
    <li><b>PHP: O PHP compõe 100% da linguagem de programação da API. Responsável pela interação com o banco de dados, manipulação e exibição dos dados retornados conforme as requisições dos enpoints.</b></li>
-   <li>JWT: Uso do JSon Web Token para autenticação e permissões a nível de usuário. Utilizamos a bilbioteca JWT Firebase do PHP.</li>
+   <li><b>JWT:</B> Uso do JSon Web Token para autenticação e permissões a nível de usuário. Utilizamos a bilbioteca JWT Firebase do PHP.</li>
+   <li><b>MySQL:</B> Banco de dados relacional utilizado para armazenar os dados do projeto.</li>
    
 </ul>
 <h3>Introdução</h3>
