@@ -66,7 +66,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
       "name": "RenataLiven",
       "email": "renata@liven.tech"
     },
-    ...
+   ```
   ]
   ```
 
