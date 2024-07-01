@@ -2,7 +2,11 @@
 <hr>
 <p><b>API desenvolvida em PHP com funcionalidades CRUD e autenticação JWT.</b></p>
 <h3>Tecnologias</h3>
-
+<ul>
+   <li><b>PHP: O PHP compõe 100% da linguagem de programação da API. Responsável pela interação com o banco de dados, manipulação e exibição dos dados retornados conforme as requisições dos enpoints.</b></li>
+   <li>JWT: Uso do JSon Web Token para autenticação e permissões a nível de usuário. Utilizamos a bilbioteca JWT Firebase do PHP.</li>
+   
+</ul>
 <h3>Introdução</h3>
 API desenvolvida para fornecer um conjunto robusto de funcionalidades para gerenciamento de usuários e endereços. Essa API utiliza autenticação JWT para garantir a segurança das operações e gerenciar os níveis de permissão do usuário para com relação às informações pertinentes a ele.
 
@@ -14,6 +18,7 @@ Para o funcionamento correto, certifique-se de ter os seguintes requisitos sejam
 <li><b>Composer na última versão</b> (para gerenciamento de dependências)</li>
 <li>Servidor web (Apache, Nginx, etc.) - para finalidade de testes locais utilizamos o xampp.</li>
 </ul>
+
 <h3>Instalação</h3>
 <ul>
 <li>1. Clone o repositório:
@@ -32,22 +37,29 @@ Para o funcionamento correto, certifique-se de ter os seguintes requisitos sejam
    </li>
 </ul>
 <h3> Autenticação</h3>
-A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, você precisará incluir um token JWT no cabeçalho das suas requisições.
-
+A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, você precisará incluir um token JWT no cabeçalho das suas requisições. <br>
+**Toda a documentação com detalhes da API se encontra no arquivo "api-swagger.yaml".
+<h4> Métodos Suportados: </h4>
+ <ul>
+    <li>POST</li>
+    <li>GET</li>
+    <li>PUT</li>
+    <li>DEL</li>
+ </ul>
 - <b>Obter Token JWT:</b>
-  - Endpoint: `POST /api/auth/login`<br>
+  - Endpoint: `POST /authServices`<br>
   - Corpo da requisição (JSON):<br>
     ```json
     {
-      "email": "usuario@example.com",
-      "password": "suaSenha"
+      "username": "RenataLiven",
+      "password": "123"
     }
     ```
     <br>
   - Resposta (JSON):<br>
     ```json
     {
-      "access_token": "seuTokenJWT"
+      "access_token": "tokenJWTformatado"
     }
     ```
 
@@ -55,7 +67,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 
 <h5> Usuários </h5>
 
-<h5> `GET /api/users`</h5>
+<h5> `GET /users`</h5>
 - <b>Descrição:</b> Retorna uma lista de todos os usuários.<br>
 - <b>Parâmetros de consulta:</b> Nenhum.<br>
 - <b>Exemplo de resposta (JSON):</b><br>
@@ -68,7 +80,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
     }
    ```
 
-<h5> `GET /api/users/{id}`</h5>
+<h5> `GET /users/{id}`</h5>
 - <b>Descrição:</b> Retorna os detalhes de um usuário específico.<br>
 - <b>Parâmetros de caminho:</b><br>
   - `id` (inteiro): ID do usuário.<br>
@@ -82,24 +94,31 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
     }
    ```
 
-<h5> `POST /api/users` </h5>
+<h5> `POST /users` </h5>
 - <b>Descrição:</b> Cria um novo usuário.<br>
 - <b>Corpo da requisição (JSON):</b><br>
 
   ```json
   {
-    "name": "Fernando Andrade",
+    "username": "Fernando Andrade",
     "email": "fernandoteste@gmail.com",
-    "password": "suaSenha"
+    "password": "123"
   }
    ```
 - <b>Exemplo de resposta (JSON):</b>
 
   ```json
   {
-    "id": 2,
-    "name": "Fernando Andrade",
-    "email": "fernandoteste@gmail.com"
+    "message": "Cadastro realizado com sucesso!",
+    "0": {
+        "id": null,
+        "username": "FernandoTesteLiven",
+        "password": "123",
+        "email": "testeliven@gmail.com",
+        "created_at": null,
+        "updated_at": null,
+        "is_active": null
+    }
   }
   ```
 
@@ -133,14 +152,17 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 
   ```json
   {
-    "id": 1,
-    "user_id": 1,
-    "country": "BR",
-    "state": "SP",
+    "id": 15,
+    "user_id": 11,
+    "street": "Rua Teste Liven",
+    "number": "11111",
+    "complement": null,
+    "neighborhood": "Centro",
     "city": "Campinas",
-    "street": "Rua Anhanguera",
-    "complement": ""
-  }
+    "state": "SP",
+    "zip_code": "13840000",
+    "country": "UK"
+}
   ```
 
 <h5>`POST /api/addresses` </h5>
@@ -149,26 +171,33 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 
   ```json
   {
-    "user_id": 1,
-    "country": "BR",
-    "state": "SP",
-    "city": "Campinas",
-    "street": "Rua Anhanguera",
-    "complement": ""
-  }
+        "street": "Rua Teste da UK",
+        "number": "9696",
+        "complement": null,
+        "neighborhood": "Centro",
+        "city": "Campinas",
+        "state": "SP",
+        "zip_code": "13840000",
+        "country": "BR"
+    }
   ```
 - <b>Exemplo de resposta (JSON):</b><br>
   ```json
   {
-    "id": 2,
-    "user_id": 1,
-    "country": "BR",
-    "state": "SP",
-    "city": "Campinas",
-    "street": "Rua Anhanguera",
-    "complement": ""
-  }
-  ```
+    "message": "Endereço inserido com sucesso!",
+    "data": {
+        "id": null,
+        "user_id": 77,
+        "street": "Rua Teste da UK",
+        "number": "9696",
+        "complement": null,
+        "neighborhood": "Centro",
+        "city": "Campinas",
+        "state": "SP",
+        "zip_code": "13840000",
+        "country": "BR"
+    }
+}```
 
 <h4> Exemplos de Uso</h4>
 <h5>Requisição com Postman:</h5>
