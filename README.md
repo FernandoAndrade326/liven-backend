@@ -7,12 +7,13 @@
 API desenvolvida para fornecer um conjunto robusto de funcionalidades para gerenciamento de usuários e endereços. Essa API utiliza autenticação JWT para garantir a segurança das operações e gerenciar os níveis de permissão do usuário para com relação às informações pertinentes a ele.
 
 <h3>Pré-requisitos</h3>
-Antes de começar, certifique-se de ter os seguintes requisitos instalados e configurados:
-- <b>PHP 8.0+</b>
-- <b>MySQL 5.7+</b>
-- <b>Composer</b> (para gerenciamento de dependências)
-- Servidor web (Apache, Nginx, etc.) - para finalidade de testes locais utilizamos o xampp.
-
+Antes de começar, certifique-se de ter os seguintes requisitos instalados e configurados:<br>
+<ul>
+<li><b>PHP 8.0+</b></li>
+<li><b>MySQL 5.7+</b></li>
+<li><b>Composer</b> (para gerenciamento de dependências)</li>
+<li>Servidor web (Apache, Nginx, etc.) - para finalidade de testes locais utilizamos o xampp.</li>
+</ul>
 <h3>Instalação</h3>
 <ul>
 <li>1. Clone o repositório:
