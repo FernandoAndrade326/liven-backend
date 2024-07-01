@@ -1,5 +1,5 @@
 <div style="margin: 0 auto"><h1 style="text-align:center">API Rest PHP - Liven</h1></center></div>
-<hr>
+
 <p><b>API desenvolvida em PHP com funcionalidades CRUD e autenticação JWT.</b></p>
 <h3>Tecnologias</h3>
 <ul>
@@ -118,9 +118,9 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
         "username": "FernandoTesteLiven",
         "password": "123",
         "email": "testeliven@gmail.com",
-        "created_at": null,
-        "updated_at": null,
-        "is_active": null
+        "created_at": "2024-06-30 19:01:40",
+        "updated_at": "2024-06-30 19:01:40",
+        "is_active": 1
     }
   }
   ```
@@ -215,7 +215,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
    Value: Bearer seuTokenJWT
    ```
 </li>
-<li>3. Clique em "Send".</li>
+<li>5. Clique em "Send".</li>
 </u1>
 <h5>Ferramentas Recomendadas</h5>
 - <b>Postman</b>: Para testar os endpoints e interagir com o backend.
