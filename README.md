@@ -66,7 +66,6 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
       "name": "RenataLiven",
       "email": "renata@liven.tech"
     },
-   ```
   ]
   ```
 
@@ -80,8 +79,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
     "id": 1,
     "name": "RenataLiven",
     "email": "renata@liven.tech"
-  }
-  ```
+  }```
 
 <h5> `POST /api/users` </h5>
 - <b>Descrição:</b> Cria um novo usuário.<br>
@@ -91,8 +89,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
     "name": "Fernando Andrade",
     "email": "fernandoteste@gmail.com",
     "password": "suaSenha"
-  }
-  ```
+  }```
 - <b>Exemplo de resposta (JSON):</b>
   ```json
   {
