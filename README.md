@@ -63,7 +63,8 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
     ```json
     {
       "access_token": "tokenJWTformatado"
-    }```
+    }
+    ```
 
 <h3> Endpoints da API</h3>
 
