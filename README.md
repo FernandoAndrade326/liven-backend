@@ -14,38 +14,37 @@ Antes de começar, certifique-se de ter os seguintes requisitos instalados e con
 - Servidor web (Apache, Nginx, etc.) - para finalidade de testes locais utilizamos o xampp.
 
 <h3>Instalação</h3>
-1. Clone o repositório:
+<ul>
+<li>1. Clone o repositório:
    ```sh
    git clone https://github.com/seu-usuario/nome-do-repositorio.git
    ```
-2. Navegue até o diretório do projeto:
+   </li>
+<li>2. Navegue até o diretório do projeto:
    ```sh
    cd nome-do-repositorio
    ```
-3. Instale as dependências:
+   </li>
+<li>3. Instale as dependências:
    ```sh
    composer install
-   ```
-4. Configure seu banco de dados no arquivo `.env`.
-
-5. Execute as migrações:
-   ```sh
-   php artisan migrate
-   ```
-
+   ``` 
+   </li>
+</ul>
 <h3> Autenticação</h3>
 A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, você precisará incluir um token JWT no cabeçalho das suas requisições.
 
 - <b>Obter Token JWT:</b>
-  - Endpoint: `POST /api/auth/login`
-  - Corpo da requisição (JSON):
+  - Endpoint: `POST /api/auth/login`<br>
+  - Corpo da requisição (JSON):<br>
     ```json
     {
       "email": "usuario@example.com",
       "password": "suaSenha"
     }
     ```
-  - Resposta (JSON):
+    <br>
+  - Resposta (JSON):<br>
     ```json
     {
       "access_token": "seuTokenJWT"
@@ -57,9 +56,9 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 <h5> Usuários </h5>
 
 <h5> `GET /api/users`</h5>
-- <b>Descrição:</b> Retorna uma lista de todos os usuários.
-- <b>Parâmetros de consulta:</b> Nenhum.
-- <b>Exemplo de resposta (JSON):</b>
+- <b>Descrição:</b> Retorna uma lista de todos os usuários.<br>
+- <b>Parâmetros de consulta:</b> Nenhum.<br>
+- <b>Exemplo de resposta (JSON):</b><br>
   ```json
   [
     {
@@ -72,10 +71,10 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
   ```
 
 <h5> `GET /api/users/{id}`</h5>
-- <b>Descrição:</b> Retorna os detalhes de um usuário específico.
-- <b>Parâmetros de caminho:</b>
-  - `id` (inteiro): ID do usuário.
-- <b>Exemplo de resposta (JSON):</b>
+- <b>Descrição:</b> Retorna os detalhes de um usuário específico.<br>
+- <b>Parâmetros de caminho:</b><br>
+  - `id` (inteiro): ID do usuário.<br>
+- <b>Exemplo de resposta (JSON):</b><br>
   ```json
   {
     "id": 1,
@@ -85,8 +84,8 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
   ```
 
 <h5> `POST /api/users` </h5>
-- <b>Descrição:</b> Cria um novo usuário.
-- <b>Corpo da requisição (JSON):</b>
+- <b>Descrição:</b> Cria um novo usuário.<br>
+- <b>Corpo da requisição (JSON):</b><br>
   ```json
   {
     "name": "Fernando Andrade",
@@ -106,9 +105,9 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 </h4>Endereços</h4>
 
 <h5> `GET /api/addresses`</h5>
-- <b>Descrição:</b> Retorna uma lista de todos os endereços.
-- <b>Parâmetros de consulta:</b> Nenhum.
-- <b>Exemplo de resposta (JSON):</b>
+- <b>Descrição:</b> Retorna uma lista de todos os endereços.<br>
+- <b>Parâmetros de consulta:</b> Nenhum.<br>
+- <b>Exemplo de resposta (JSON):</b><br>
   ```json
   [
     {
@@ -125,10 +124,10 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
   ```
 
 <h5> `GET /api/addresses/{id}`</h5>
-- <b>Descrição:</b> Retorna os detalhes de um endereço específico.
-- <b>Parâmetros de caminho:</b>
+- <b>Descrição:</b> Retorna os detalhes de um endereço específico.<br>
+- <b>Parâmetros de caminho:</b> <br>
   - `id` (inteiro): ID do endereço.
-- <b>Exemplo de resposta (JSON):</b>
+- <b>Exemplo de resposta (JSON):</b><br>
   ```json
   {
     "id": 1,
@@ -142,8 +141,8 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
   ```
 
 <h5>`POST /api/addresses` </h5>
-- <b>Descrição:</b> Cria um novo endereço.
-- <b>Corpo da requisição (JSON):</b>
+- <b>Descrição:</b> Cria um novo endereço.<br>
+- <b>Corpo da requisição (JSON):</b><br>
   ```json
   {
     "user_id": 1,
@@ -154,7 +153,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
     "complement": ""
   }
   ```
-- <b>Exemplo de resposta (JSON):</b>
+- <b>Exemplo de resposta (JSON):</b><br>
   ```json
   {
     "id": 2,
@@ -167,12 +166,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
   }
   ```
 
-## Exemplos de Uso
-### Requisição com `curl`:
-```sh
-curl -X GET "https://seu-dominio.com/api/users" -H "Authorization: Bearer seuTokenJWT"
-```
-
+<h4> Exemplos de Uso</h4>
 <h5>Requisição com Postman:</h5>
 <u1> 
 <li>1. Selecione o método HTTP e insira a URL.</li>
