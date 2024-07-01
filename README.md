@@ -59,15 +59,14 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 - <b>Descrição:</b> Retorna uma lista de todos os usuários.<br>
 - <b>Parâmetros de consulta:</b> Nenhum.<br>
 - <b>Exemplo de resposta (JSON):</b><br>
-  ```json
-  [
+ 
+   ```json
     {
       "id": 1,
       "name": "RenataLiven",
       "email": "renata@liven.tech"
-    },
-  ]
-  ```
+    }
+    ```
 
 <h5> `GET /api/users/{id}`</h5>
 - <b>Descrição:</b> Retorna os detalhes de um usuário específico.<br>
