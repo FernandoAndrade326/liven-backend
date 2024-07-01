@@ -17,9 +17,9 @@ Antes de começar, certifique-se de ter os seguintes requisitos instalados e con
 <h3>Instalação</h3>
 <ul>
 <li>1. Clone o repositório:
-   ```sh
-   git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/FernandoAndrade326/liven-backend)
-   ```
+
+   git clone  (https://github.com/FernandoAndrade326/liven-backend)
+
    </li>
 <li>2. Navegue até o diretório do projeto:
    ```sh
