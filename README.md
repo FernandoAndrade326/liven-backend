@@ -73,23 +73,28 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 - <b>Parâmetros de caminho:</b><br>
   - `id` (inteiro): ID do usuário.<br>
 - <b>Exemplo de resposta (JSON):</b><br>
+
   ```json
-  {
-    "id": 1,
+    {
+      "id": 1,
     "name": "RenataLiven",
     "email": "renata@liven.tech"
-  }```
+    }
+   ```
 
 <h5> `POST /api/users` </h5>
 - <b>Descrição:</b> Cria um novo usuário.<br>
 - <b>Corpo da requisição (JSON):</b><br>
+
   ```json
   {
     "name": "Fernando Andrade",
     "email": "fernandoteste@gmail.com",
     "password": "suaSenha"
-  }```
+  }
+   ```
 - <b>Exemplo de resposta (JSON):</b>
+
   ```json
   {
     "id": 2,
@@ -104,6 +109,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 - <b>Descrição:</b> Retorna uma lista de todos os endereços.<br>
 - <b>Parâmetros de consulta:</b> Nenhum.<br>
 - <b>Exemplo de resposta (JSON):</b><br>
+
   ```json
   [
     {
@@ -124,6 +130,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 - <b>Parâmetros de caminho:</b> <br>
   - `id` (inteiro): ID do endereço.
 - <b>Exemplo de resposta (JSON):</b><br>
+
   ```json
   {
     "id": 1,
@@ -139,6 +146,7 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 <h5>`POST /api/addresses` </h5>
 - <b>Descrição:</b> Cria um novo endereço.<br>
 - <b>Corpo da requisição (JSON):</b><br>
+
   ```json
   {
     "user_id": 1,
@@ -167,10 +175,12 @@ A API utiliza JWT para autenticação. Para acessar os endpoints protegidos, voc
 <u1> 
 <li>1. Selecione o método HTTP e insira a URL.</li>
 <li>2. Vá para a aba "Headers" e adicione:<br>
+   
    ```
    Key: Authorization
    Value: Bearer seuTokenJWT
-   ```</li>
+   ```
+</li>
 <li>3. Clique em "Send".</li>
 </u1>
 <h5>Ferramentas Recomendadas</h5>
