@@ -153,7 +153,7 @@ paths:
                         type: string
                       isActive:
                         type: integer
-                  addresses:
+                  addressess:
                     type: array
                     items:
                       type: object
@@ -216,7 +216,7 @@ paths:
                         type: string
                       isActive:
                         type: integer
-                  addresses:
+                  addressess:
                     type: array
                     items:
                       type: object
@@ -322,7 +322,7 @@ paths:
           description: Usuário não encontrado!
         '500':
           description: Erro ao deletar o usuário.
-  /addresses:
+  /addressess:
     post:
       tags:
         - Address
@@ -455,7 +455,7 @@ paths:
           description: Nenhum endereço encontrado para este usuário.
         '401':
           description: Não autorizado! Token inválido. Por favor, faça login novamente!
-  /addresses/{id}:
+  /addressess/{id}:
     get:
       tags:
         - Address
