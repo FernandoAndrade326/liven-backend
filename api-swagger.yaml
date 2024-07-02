@@ -1,0 +1,624 @@
+openapi: 3.0.0
+info:
+  title: Documentação API PHP - Teste Liven Backend
+  version: 1.0.0
+  description: >-
+    Documentação da API REST em PHP desenvolvida para o teste de backend da
+    Liven. Contém todos os endpoints.
+  contact:
+    email: fernando326andrade@gmail.com
+    name: Luis Fernando de Souza Andrade
+servers:
+  - url: http://localhost/liven/teste_backend
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
+paths:
+  /authServices:
+    post:
+      tags:
+        - Auth
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '201':
+          description: Login bem-sucedido!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login bem-sucedido!
+                  token:
+                    type: string
+                    example: >-
+                      eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo3OCwidXNlcm5hbWUiOiJGZXJuYW5kb1Rlc3RlTGl2ZW4ifQ.tVgIp4NoLiqQ6NCwgr621nuhUDcR88d4M9tNWQOoMR8
+        '500':
+          description: Dados inconsistentes. Não foi possível realizar o login!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Erro:
+                    type: string
+                    example: Dados inconsistentes. Não foi possível realizar o login!
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+              required:
+                - username
+                - password
+                - email
+      responses:
+        '201':
+          description: Cadastro realizado com sucesso!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cadastro realizado com sucesso!
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      is_active:
+                        type: integer
+        '500':
+          description: Não foi possível inserir o usuário!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Erro:
+                    type: string
+                    example: Não foi possível inserir o usuário!
+    get:
+      tags:
+        - Users
+      summary: Retorna os dados do usuario
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Informações do seu cadastro.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Informações do seu cadastro.
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      isActive:
+                        type: integer
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address_id:
+                          type: integer
+                        address_street:
+                          type: string
+                        address_number:
+                          type: string
+                        address_complement:
+                          type: string
+                          nullable: true
+                        address_neighborhood:
+                          type: string
+                        address_city:
+                          type: string
+                        address_state:
+                          type: string
+                        address_zip_code:
+                          type: string
+                        address_country:
+                          type: string
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Retrieve user information by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Informações do seu cadastro.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Informações do seu cadastro.
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      email:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      isActive:
+                        type: integer
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address_id:
+                          type: integer
+                        address_street:
+                          type: string
+                        address_number:
+                          type: string
+                        address_complement:
+                          type: string
+                          nullable: true
+                        address_neighborhood:
+                          type: string
+                        address_city:
+                          type: string
+                        address_state:
+                          type: string
+                        address_zip_code:
+                          type: string
+                        address_country:
+                          type: string
+        '403':
+          description: Você não tem permissão para acessar outros cadastros.
+        '404':
+          description: Usuário não encontrado!
+    put:
+      tags:
+        - Users
+      summary: Atualiza os dados do usuário pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Dados do usuário atualizados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Dados do usuário atualizados com sucesso.
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      email:
+                        type: string
+        '401':
+          description: Token inválido. Por favor, faça login novamente!
+        '403':
+          description: Você não tem permissão para alterar dados de outro usuário.
+        '404':
+          description: Usuário não encontrado!
+        '500':
+          description: Erro ao atualizar os dados do usuário.
+    delete:
+      tags:
+        - Users
+      summary: Deleta o usuário pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuário deletado com sucesso.
+        '401':
+          description: Não autorizado! Token inválido.
+        '403':
+          description: Você não tem permissão para deletar outro usuário!
+        '404':
+          description: Usuário não encontrado!
+        '500':
+          description: Erro ao deletar o usuário.
+  /addresses:
+    post:
+      tags:
+        - Address
+      summary: Insere um novo endereço para o usuário autenticado
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                street:
+                  type: string
+                number:
+                  type: string
+                complement:
+                  type: string
+                  nullable: true
+                neighborhood:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+              required:
+                - street
+                - number
+                - neighborhood
+                - city
+                - state
+                - zip_code
+                - country
+      responses:
+        '201':
+          description: Endereço inserido com sucesso!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Endereço inserido com sucesso!
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      street:
+                        type: string
+                      number:
+                        type: string
+                      complement:
+                        type: string
+                        nullable: true
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip_code:
+                        type: string
+                      country:
+                        type: string
+        '400':
+          description: Usuário não cadastrado.
+        '401':
+          description: Não autorizado! Token inválido. Por favor, faça login novamente!
+        '500':
+          description: Não foi possível inserir o endereço!
+    get:
+      tags:
+        - Address
+      summary: Retorna todos os endereços do usuário autenticado
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Endereços recuperados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Endereços recuperados com sucesso.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        street:
+                          type: string
+                        number:
+                          type: string
+                        complement:
+                          type: string
+                          nullable: true
+                        neighborhood:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        zip_code:
+                          type: string
+                        country:
+                          type: string
+        '204':
+          description: Nenhum endereço encontrado para este usuário.
+        '401':
+          description: Não autorizado! Token inválido. Por favor, faça login novamente!
+  /addresses/{id}:
+    get:
+      tags:
+        - Address
+      summary: Retorna um endereço pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Endereço encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Endereço encontrado.
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      street:
+                        type: string
+                      number:
+                        type: string
+                      complement:
+                        type: string
+                        nullable: true
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip_code:
+                        type: string
+                      country:
+                        type: string
+        '401':
+          description: Não autorizado! Token inválido. Por favor, faça login novamente!
+        '404':
+          description: Endereço não encontrado!
+    put:
+      tags:
+        - Address
+      summary: Atualiza um endereço pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                street:
+                  type: string
+                number:
+                  type: string
+                complement:
+                  type: string
+                  nullable: true
+                neighborhood:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+              required:
+                - street
+                - number
+                - neighborhood
+                - city
+                - state
+                - zip_code
+                - country
+      responses:
+        '200':
+          description: Endereço atualizado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Endereço atualizado com sucesso.
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      street:
+                        type: string
+                      number:
+                        type: string
+                      complement:
+                        type: string
+                        nullable: true
+                      neighborhood:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip_code:
+                        type: string
+                      country:
+                        type: string
+        '401':
+          description: Não autorizado! Token inválido. Por favor, faça login novamente!
+        '403':
+          description: Você não tem permissão para alterar este endereço.
+        '404':
+          description: Endereço não encontrado!
+        '500':
+          description: Erro ao atualizar o endereço.
+    delete:
+      tags:
+        - Address
+      summary: Delete um endereço pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Endereço deletado com sucesso.
+        '401':
+          description: Não autorizado! Token inválido.
+        '403':
+          description: Você não tem permissão para deletar este endereço!
+        '404':
+          description: Endereço não encontrado!
+        '500':
+          description: Erro ao deletar o endereço.
