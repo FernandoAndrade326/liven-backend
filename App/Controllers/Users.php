@@ -1,8 +1,14 @@
 <?php
     
     use App\Core\Controller;
+    use App\Middleware\AuthMiddleware;
 
     class Users extends Controller{
+        public function __construct() {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') { //se n for post, requer autenticacao
+                AuthMiddleware::authenticate(); //pq insert user n requer autenticacao
+            }
+        }
 
         public function index(){
             $authModel = $this->model("AuthService");
@@ -93,7 +99,7 @@
 
             if($usersModel){
                 http_response_code(201);
-                echo json_encode(["Cadastro realizado com sucesso!", $usersModel]);
+                echo json_encode(["message"=>"Cadastro realizado com sucesso!", $usersModel]);
             } else{
                 http_response_code(500);
                 echo json_encode(["Erro: " =>"Não foi possível inserir o usuário!"]);
